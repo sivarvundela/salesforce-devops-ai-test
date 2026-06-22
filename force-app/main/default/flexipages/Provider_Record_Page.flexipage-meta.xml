@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Standard record page for viewing and managing healthcare provider details.</description>
+    <flexiPageType>RecordPage</flexiPageType>
+    <masterLabel>Provider Record Page</masterLabel>
+    <sobjectType>Provider__c</sobjectType>
+    <template>
+        <name>RecordPageTemplate2col12</name>
+    </template>
+    <regions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>force:highlightsPanel</componentName>
+            </componentInstance>
+        </itemInstances>
+        <name>force_highlights</name>
+        <type>Facet</type>
+    </regions>
+    <regions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>force:detailPanel</componentName>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </regions>
+    <regions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>force:relatedListContainer</componentName>
+            </componentInstance>
+        </itemInstances>
+        <name>right</name>
+        <type>Region</type>
+    </regions>
+</FlexiPage>

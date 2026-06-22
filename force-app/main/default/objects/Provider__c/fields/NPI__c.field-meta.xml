@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NPI__c</fullName>
+    <label>NPI</label>
+    <type>Text</type>
+    <length>10</length>
+    <required>true</required>
+    <unique>true</unique>
+    <externalId>true</externalId>
+    <description>National Provider Identifier - a unique 10-digit identification number for covered healthcare providers.</description>
+</CustomField>
