@@ -1,0 +1,9 @@
+.tree-grid-wrapper {
+    border-radius: 4px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.hierarchy-tree-grid {
+    --lwc-colorTextLink: #0176d3;
+}
