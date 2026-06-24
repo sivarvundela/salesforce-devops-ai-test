@@ -1,0 +1,91 @@
+<template>
+    <lightning-card title="Account Hierarchy" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={error}>
+                    <p class="slds-text-color_error">{error}</p>
+                </template>
+
+                <template if:false={error}>
+                    <div class="hierarchy-tree">
+                        <template for:each={accountTree} for:item="account">
+                            <div key={account.Id} class="tree-node">
+                                <div class="node-header slds-p-vertical_x-small slds-border_bottom">
+                                    <lightning-button-icon
+                                        icon-name={account.expandIcon}
+                                        alternative-text="Expand/Collapse"
+                                        variant="bare"
+                                        onclick={toggleNode}
+                                        data-id={account.Id}
+                                        class="slds-m-right_x-small">
+                                    </lightning-button-icon>
+                                    <lightning-icon icon-name="standard:account" size="small"></lightning-icon>
+                                    <span class="slds-m-left_x-small">{account.Name}</span>
+                                </div>
+
+                                <template if:true={account.isExpanded}>
+                                    <div class="node-children slds-m-left_medium">
+                                        <template for:each={account.contacts} for:item="contact">
+                                            <div key={contact.Id} class="contact-row slds-p-vertical_x-small slds-border_bottom">
+                                                <lightning-icon icon-name="standard:contact" size="small"></lightning-icon>
+                                                <span class="slds-m-left_x-small">{contact.Name}</span>
+                                            </div>
+                                        </template>
+
+                                        <div class="address-info slds-p-vertical_x-small">
+                                            <div class="slds-text-heading_small">Address:</div>
+                                            <div>{account.BillingStreet}</div>
+                                            <div>{account.BillingCity}, {account.BillingState} {account.BillingPostalCode}</div>
+                                            <div>{account.BillingCountry}</div>
+                                        </div>
+
+                                        <template if:true={account.hasChildren}>
+                                            <div class="child-nodes">
+                                                <template for:each={account.children} for:item="childAccount">
+                                                    <div key={childAccount.Id} class="child-node slds-m-top_small">
+                                                        <lightning-button-icon
+                                                            icon-name={childAccount.expandIcon}
+                                                            alternative-text="Expand/Collapse"
+                                                            variant="bare"
+                                                            onclick={toggleNode}
+                                                            data-id={childAccount.Id}
+                                                            class="slds-m-right_x-small">
+                                                        </lightning-button-icon>
+                                                        <lightning-icon icon-name="standard:account" size="small"></lightning-icon>
+                                                        <span class="slds-m-left_x-small">{childAccount.Name}</span>
+
+                                                        <template if:true={childAccount.isExpanded}>
+                                                            <div class="child-details slds-m-left_medium">
+                                                                <template for:each={childAccount.contacts} for:item="contact">
+                                                                    <div key={contact.Id} class="contact-row slds-p-vertical_x-small slds-border_bottom">
+                                                                        <lightning-icon icon-name="standard:contact" size="small"></lightning-icon>
+                                                                        <span class="slds-m-left_x-small">{contact.Name}</span>
+                                                                    </div>
+                                                                </template>
+
+                                                                <div class="address-info slds-p-vertical_x-small">
+                                                                    <div class="slds-text-heading_small">Address:</div>
+                                                                    <div>{childAccount.BillingStreet}</div>
+                                                                    <div>{childAccount.BillingCity}, {childAccount.BillingState} {childAccount.BillingPostalCode}</div>
+                                                                    <div>{childAccount.BillingCountry}</div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
