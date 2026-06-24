@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequireAccountOrContact</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISBLANK(Account__c), ISBLANK(Contact__c))</errorConditionFormula>
+    <errorMessage>Address must be linked to either an Account or a Contact.</errorMessage>
+    <errorDisplayField>Account__c</errorDisplayField>
+    <description>Ensures every address record is associated with at least one parent record (Account or Contact).</description>
+</ValidationRule>
