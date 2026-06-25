@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Member</label>
-    <pluralLabel>Members</pluralLabel>
+    <label>Address</label>
+    <pluralLabel>Addresses</pluralLabel>
     <nameField>
-        <label>Member Name</label>
+        <label>Address Name</label>
         <type>Text</type>
     </nameField>
     <deploymentStatus>Deployed</deploymentStatus>
     <sharingModel>Private</sharingModel>
-    <description>Enrolled health plan member record containing core demographic and enrollment information. Linked to Enrollment_Request via primary enrollment flow.</description>
-    <enableActivities>true</enableActivities>
+    <description>Member address record for residence, mailing, and service delivery location tracking. Supports multiple addresses per member (e.g., residence vs. mailing).</description>
+    <enableActivities>false</enableActivities>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>

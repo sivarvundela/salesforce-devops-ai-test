@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Standard Yes/No picklist values.</description>
+    <masterLabel>YesNo</masterLabel>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>Yes</fullName>
+        <default>false</default>
+        <label>Yes</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>No</fullName>
+        <default>false</default>
+        <label>No</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>
