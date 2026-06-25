@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>County</members>
-        <members>Coverage_Level</members>
-        <members>Enrollment_Status</members>
-        <members>Gender</members>
-        <members>Language</members>
-        <members>Plan_Type</members>
-        <members>US_States</members>
-        <name>GlobalValueSet</name>
-    </types>
-    <types>
-        <members>CustomLabels</members>
-        <name>CustomLabels</name>
-    </types>
-    <types>
-        <members>Member__c</members>
         <members>Enrollment_Request__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Enrollment_Request__c.AddressLine1__c</members>
+        <members>Enrollment_Request__c.AddressLine2__c</members>
+        <members>Enrollment_Request__c.BrokerInformation__c</members>
+        <members>Enrollment_Request__c.City__c</members>
+        <members>Enrollment_Request__c.County__c</members>
+        <members>Enrollment_Request__c.CoverageLevel__c</members>
+        <members>Enrollment_Request__c.DateOfBirth__c</members>
+        <members>Enrollment_Request__c.EffectiveDate__c</members>
+        <members>Enrollment_Request__c.Email__c</members>
+        <members>Enrollment_Request__c.EmployerGroup__c</members>
+        <members>Enrollment_Request__c.FirstName__c</members>
+        <members>Enrollment_Request__c.Gender__c</members>
+        <members>Enrollment_Request__c.LastName__c</members>
+        <members>Enrollment_Request__c.MaritalStatus__c</members>
+        <members>Enrollment_Request__c.MiddleName__c</members>
+        <members>Enrollment_Request__c.PhoneNumber__c</members>
+        <members>Enrollment_Request__c.PlanName__c</members>
+        <members>Enrollment_Request__c.PlanType__c</members>
+        <members>Enrollment_Request__c.PreferredLanguage__c</members>
+        <members>Enrollment_Request__c.PrimaryCareProvider__c</members>
+        <members>Enrollment_Request__c.SSN__c</members>
+        <members>Enrollment_Request__c.State__c</members>
+        <members>Enrollment_Request__c.Status__c</members>
+        <members>Enrollment_Request__c.ZIPCode__c</members>
+        <name>CustomField</name>
     </types>
     <version>62.0</version>
 </Package>

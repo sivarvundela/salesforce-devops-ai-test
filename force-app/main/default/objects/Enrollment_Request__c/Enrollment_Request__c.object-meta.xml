@@ -8,11 +8,14 @@
         <displayFormat>ER-{0000000}</displayFormat>
     </nameField>
     <deploymentStatus>Deployed</deploymentStatus>
-    <sharingModel>Private</sharingModel>
-    <description>Tracks member enrollment requests through intake, validation, supervisor review, and completion. Manages plan selection, coverage levels, and integration with downstream payer systems.</description>
+    <description>Captures member enrollment requests with member information, coverage details, and validation tracking.</description>
     <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
-    <enableFeeds>false</enableFeeds>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
