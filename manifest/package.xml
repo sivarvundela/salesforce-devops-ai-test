@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>County</members>
-        <members>Coverage_Level</members>
-        <members>Enrollment_Status</members>
-        <members>Gender</members>
-        <members>Language</members>
-        <members>Plan_Type</members>
-        <members>US_States</members>
-        <name>GlobalValueSet</name>
-    </types>
-    <types>
-        <members>CustomLabels</members>
-        <name>CustomLabels</name>
-    </types>
-    <types>
-        <members>Member__c</members>
+        <members>Address__c</members>
+        <members>Coverage__c</members>
+        <members>Enrollment_Document__c</members>
         <members>Enrollment_Request__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Address__c.City__c</members>
+        <members>Address__c.County__c</members>
+        <members>Address__c.Enrollment_Request__c</members>
+        <members>Address__c.Line_1__c</members>
+        <members>Address__c.Line_2__c</members>
+        <members>Address__c.State__c</members>
+        <members>Address__c.ZIP_Code__c</members>
+        <members>Coverage__c.Coverage_Level__c</members>
+        <members>Coverage__c.Effective_Date__c</members>
+        <members>Coverage__c.Enrollment_Request__c</members>
+        <members>Coverage__c.Plan__c</members>
+        <members>Coverage__c.Primary_Care_Provider__c</members>
+        <members>Coverage__c.Status__c</members>
+        <members>Enrollment_Document__c.Document_Type__c</members>
+        <members>Enrollment_Document__c.Enrollment_Request__c</members>
+        <members>Enrollment_Document__c.File_Name__c</members>
+        <members>Enrollment_Document__c.File_Path__c</members>
+        <members>Enrollment_Document__c.File_Size__c</members>
+        <members>Enrollment_Document__c.Upload_Date__c</members>
+        <members>Enrollment_Request__c.Status__c</members>
+        <name>CustomField</name>
     </types>
     <version>62.0</version>
 </Package>

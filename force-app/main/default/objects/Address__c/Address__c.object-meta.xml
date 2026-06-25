@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Enrollment Request</label>
-    <pluralLabel>Enrollment Requests</pluralLabel>
+    <label>Address</label>
+    <pluralLabel>Addresses</pluralLabel>
     <nameField>
-        <label>Enrollment Request Number</label>
+        <label>Address ID</label>
         <type>AutoNumber</type>
-        <displayFormat>ER-{000000}</displayFormat>
+        <displayFormat>ADDR-{000000}</displayFormat>
     </nameField>
     <deploymentStatus>Deployed</deploymentStatus>
     <sharingModel>ReadWrite</sharingModel>
-    <description>Represents a member enrollment request with member information, coverage selection, document uploads, and integration tracking.</description>
-    <enableActivities>true</enableActivities>
+    <description>Stores member address information captured during enrollment intake. Linked to an Enrollment Request.</description>
+    <enableActivities>false</enableActivities>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
