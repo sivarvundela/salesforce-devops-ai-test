@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Enrollment Request</label>
+    <pluralLabel>Enrollment Requests</pluralLabel>
+    <nameField>
+        <label>Enrollment Request Number</label>
+        <type>AutoNumber</type>
+        <displayFormat>ER-{0000000}</displayFormat>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>Private</sharingModel>
+    <description>Tracks member enrollment requests through intake, validation, supervisor review, and completion. Manages plan selection, coverage levels, and integration with downstream payer systems.</description>
+    <enableActivities>true</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableFeeds>false</enableFeeds>
+</CustomObject>

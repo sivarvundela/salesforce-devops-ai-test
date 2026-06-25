@@ -14,5 +14,10 @@
         <members>CustomLabels</members>
         <name>CustomLabels</name>
     </types>
+    <types>
+        <members>Member__c</members>
+        <members>Enrollment_Request__c</members>
+        <name>CustomObject</name>
+    </types>
     <version>62.0</version>
 </Package>
