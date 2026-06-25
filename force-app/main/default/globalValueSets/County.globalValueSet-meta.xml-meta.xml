@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>United States counties - commonly enrolled counties for network verification and compliance</description>
+    <masterLabel>County</masterLabel>
+    <sorted>true</sorted>
+    <customValue>
+        <fullName>Los_Angeles</fullName>
+        <default>false</default>
+        <label>Los Angeles County, CA</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Cook</fullName>
+        <default>false</default>
+        <label>Cook County, IL</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Harris</fullName>
+        <default>false</default>
+        <label>Harris County, TX</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Maricopa</fullName>
+        <default>false</default>
+        <label>Maricopa County, AZ</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>San_Diego</fullName>
+        <default>false</default>
+        <label>San Diego County, CA</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Broward</fullName>
+        <default>false</default>
+        <label>Broward County, FL</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Miami_Dade</fullName>
+        <default>false</default>
+        <label>Miami-Dade County, FL</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Orange</fullName>
+        <default>false</default>
+        <label>Orange County, CA</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Kings</fullName>
+        <default>false</default>
+        <label>Kings County, NY</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>New_York</fullName>
+        <default>false</default>
+        <label>New York County, NY</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Franklin</fullName>
+        <default>false</default>
+        <label>Franklin County, OH</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Dallas</fullName>
+        <default>false</default>
+        <label>Dallas County, TX</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Riverside</fullName>
+        <default>false</default>
+        <label>Riverside County, CA</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Tarrant</fullName>
+        <default>false</default>
+        <label>Tarrant County, TX</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>King</fullName>
+        <default>false</default>
+        <label>King County, WA</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>

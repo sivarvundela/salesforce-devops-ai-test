@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Coverage level types: Individual, Employee+Spouse, Family</description>
+    <masterLabel>Coverage Level</masterLabel>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>Individual</fullName>
+        <default>false</default>
+        <label>Individual</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Employee_Spouse</fullName>
+        <default>false</default>
+        <label>Employee + Spouse</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Family</fullName>
+        <default>false</default>
+        <label>Family</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>

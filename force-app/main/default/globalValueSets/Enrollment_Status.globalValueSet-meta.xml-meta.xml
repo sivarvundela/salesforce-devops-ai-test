@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Enrollment request lifecycle statuses: Draft, Submitted, Pending Review, Pending Information, Approved, Rejected, Completed</description>
+    <masterLabel>Enrollment Status</masterLabel>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>Draft</fullName>
+        <default>true</default>
+        <label>Draft</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Submitted</fullName>
+        <default>false</default>
+        <label>Submitted</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Pending_Review</fullName>
+        <default>false</default>
+        <label>Pending Review</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Pending_Information</fullName>
+        <default>false</default>
+        <label>Pending Information</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Approved</fullName>
+        <default>false</default>
+        <label>Approved</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Rejected</fullName>
+        <default>false</default>
+        <label>Rejected</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Completed</fullName>
+        <default>false</default>
+        <label>Completed</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>
