@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Health plan types available for enrollment: HMO, PPO, EPO, POS, HDHP</description>
+    <masterLabel>Plan Type</masterLabel>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>HMO</fullName>
+        <default>false</default>
+        <label>HMO (Health Maintenance Organization)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>PPO</fullName>
+        <default>false</default>
+        <label>PPO (Preferred Provider Organization)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>EPO</fullName>
+        <default>false</default>
+        <label>EPO (Exclusive Provider Organization)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>POS</fullName>
+        <default>false</default>
+        <label>POS (Point of Service)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>HDHP</fullName>
+        <default>false</default>
+        <label>HDHP (High Deductible Health Plan)</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>

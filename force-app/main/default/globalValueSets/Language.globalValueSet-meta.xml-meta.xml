@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Preferred languages for member communication and enrollment materials</description>
+    <masterLabel>Language</masterLabel>
+    <sorted>true</sorted>
+    <customValue>
+        <fullName>English</fullName>
+        <default>true</default>
+        <label>English</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Spanish</fullName>
+        <default>false</default>
+        <label>Spanish (Español)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>French</fullName>
+        <default>false</default>
+        <label>French (Français)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>German</fullName>
+        <default>false</default>
+        <label>German (Deutsch)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Italian</fullName>
+        <default>false</default>
+        <label>Italian (Italiano)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Portuguese</fullName>
+        <default>false</default>
+        <label>Portuguese (Português)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Chinese_Simplified</fullName>
+        <default>false</default>
+        <label>Chinese - Simplified (简体中文)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Chinese_Traditional</fullName>
+        <default>false</default>
+        <label>Chinese - Traditional (繁體中文)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Japanese</fullName>
+        <default>false</default>
+        <label>Japanese (日本語)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Korean</fullName>
+        <default>false</default>
+        <label>Korean (한국어)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Vietnamese</fullName>
+        <default>false</default>
+        <label>Vietnamese (Tiếng Việt)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Tagalog</fullName>
+        <default>false</default>
+        <label>Tagalog (Filipino)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Arabic</fullName>
+        <default>false</default>
+        <label>Arabic (العربية)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Russian</fullName>
+        <default>false</default>
+        <label>Russian (Русский)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Polish</fullName>
+        <default>false</default>
+        <label>Polish (Polski)</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Turkish</fullName>
+        <default>false</default>
+        <label>Turkish (Türkçe)</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>

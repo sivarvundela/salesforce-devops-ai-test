@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Gender values for member demographics</description>
+    <masterLabel>Gender</masterLabel>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>Male</fullName>
+        <default>false</default>
+        <label>Male</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Female</fullName>
+        <default>false</default>
+        <label>Female</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Non_Binary</fullName>
+        <default>false</default>
+        <label>Non-Binary</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+        <isActive>true</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Prefer_Not_to_Say</fullName>
+        <default>false</default>
+        <label>Prefer Not to Say</label>
+        <isActive>true</isActive>
+    </customValue>
+</GlobalValueSet>
