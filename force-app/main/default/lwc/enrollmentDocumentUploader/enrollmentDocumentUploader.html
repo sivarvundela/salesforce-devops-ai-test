@@ -1,0 +1,109 @@
+<template>
+    <div class="enrollment-uploader">
+        <lightning-card>
+            <h2 slot="title" class="slds-text-heading_small">{documentsLabel}</h2>
+            <div class="slds-m-around_medium">
+
+                <!-- Document Type Selection -->
+                <div class="slds-m-bottom_medium">
+                    <lightning-combobox
+                        label="Document Type"
+                        value={selectedDocumentType}
+                        options={documentTypeOptions}
+                        required
+                        onchange={handleDocumentTypeChange}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Drag and Drop Zone -->
+                <div
+                    class={dropZoneClass}
+                    ondragover={handleDragOver}
+                    ondragleave={handleDragLeave}
+                    ondrop={handleDrop}
+                    role="region"
+                    aria-label="File drop zone">
+                    <div class="slds-align_absolute-center enrollment-uploader__drop-content">
+                        <lightning-icon icon-name="utility:upload" size="large" alternative-text="Upload files"></lightning-icon>
+                        <p class="slds-text-heading_small slds-m-top_small">Drag and drop files here</p>
+                        <p class="slds-text-body_small slds-m-top_x-small">or</p>
+                        <lightning-button
+                            label="Choose Files"
+                            title="Open file picker"
+                            aria-label="Choose files to upload"
+                            variant="brand"
+                            class="slds-m-top_small"
+                            onclick={handleChooseFiles}>
+                        </lightning-button>
+                        <p class="slds-text-body_small slds-m-top_small enrollment-uploader__hint">
+                            Accepted: PDF, PNG, JPG, DOC, DOCX &bull; Max: {maxFileSizeMb} MB
+                        </p>
+                    </div>
+                    <input
+                        type="file"
+                        class="slds-hide"
+                        multiple
+                        accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+                        data-id="fileInput"
+                        onchange={handleFileInputChange}>
+                    </input>
+                </div>
+
+                <!-- Validation Errors -->
+                <template if:true={hasValidationErrors}>
+                    <div role="alert" class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium">
+                        <span class="slds-assistive-text">Error</span>
+                        <ul>
+                            <template for:each={validationErrors} for:item="err">
+                                <li key={err}>{err}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <!-- Upload Progress -->
+                <template if:true={isUploading}>
+                    <div class="slds-m-top_medium">
+                        <lightning-spinner
+                            alternative-text="Uploading files"
+                            aria-label="Uploading files, please wait"
+                            size="small">
+                        </lightning-spinner>
+                        <p class="slds-text-body_small slds-m-top_x-small">Uploading...</p>
+                    </div>
+                </template>
+
+                <!-- Uploaded Files List -->
+                <template if:true={hasUploadedFiles}>
+                    <div class="slds-m-top_medium">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">Uploaded Documents</h3>
+                        <ul class="slds-has-dividers_top-space">
+                            <template for:each={uploadedFiles} for:item="file">
+                                <li key={file.id} class="slds-item enrollment-uploader__file-item">
+                                    <div class="slds-grid slds-grid_align-spread">
+                                        <div class="slds-col">
+                                            <lightning-icon icon-name="doctype:attachment" size="x-small" alternative-text="File"></lightning-icon>
+                                            <span class="slds-m-left_x-small">{file.name}</span>
+                                            <span class="enrollment-uploader__file-type slds-m-left_x-small">({file.documentType})</span>
+                                            <span class="enrollment-uploader__file-size slds-m-left_x-small">{file.sizeLabel}</span>
+                                        </div>
+                                        <div class="slds-col slds-shrink">
+                                            <lightning-button-icon
+                                                icon-name="utility:delete"
+                                                title="Remove file"
+                                                aria-label={file.removeLabel}
+                                                variant="bare"
+                                                data-id={file.id}
+                                                onclick={handleRemoveFile}>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+            </div>
+        </lightning-card>
+    </div>
+</template>

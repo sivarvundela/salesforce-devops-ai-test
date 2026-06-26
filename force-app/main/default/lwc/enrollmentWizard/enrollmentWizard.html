@@ -1,0 +1,130 @@
+<template>
+    <div class="enrollment-wizard">
+        <lightning-card>
+            <h1 slot="title" class="slds-text-heading_medium">{newMemberEnrollmentTitle}</h1>
+
+            <!-- Progress Indicator -->
+            <div class="slds-m-horizontal_medium slds-m-top_medium">
+                <lightning-progress-indicator
+                    current-step={currentStepValue}
+                    type="base"
+                    has-error={stepHasError}>
+                    <template for:each={steps} for:item="step">
+                        <lightning-progress-step
+                            key={step.value}
+                            label={step.label}
+                            value={step.value}>
+                        </lightning-progress-step>
+                    </template>
+                </lightning-progress-indicator>
+            </div>
+
+            <!-- Step Content -->
+            <div class="slds-m-around_medium">
+
+                <!-- Step 1: Member Information -->
+                <template if:true={isStep1}>
+                    <c-enrollment-member-information
+                        form-data={enrollmentRecord}
+                        onformchange={handleFormChange}>
+                    </c-enrollment-member-information>
+                </template>
+
+                <!-- Step 2: Document Upload -->
+                <template if:true={isStep2}>
+                    <c-enrollment-document-uploader
+                        enrollment-request-id={enrollmentRequestId}
+                        ondocumentuploaded={handleDocumentUploaded}>
+                    </c-enrollment-document-uploader>
+                </template>
+
+                <!-- Step 3: Review & Submit -->
+                <template if:true={isStep3}>
+                    <div class="enrollment-wizard__review">
+                        <div role="status" class="slds-notify slds-notify_toast slds-theme_success slds-m-bottom_medium">
+                            <span class="slds-assistive-text">Success</span>
+                            <p class="slds-text-heading_small">Review your enrollment information before submitting.</p>
+                        </div>
+                        <dl class="slds-dl_horizontal">
+                            <dt class="enrollment-wizard__review-term">Name:</dt>
+                            <dd class="slds-dl_horizontal__detail">{fullName}</dd>
+                            <dt class="enrollment-wizard__review-term">Date of Birth:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.DateOfBirth__c}</dd>
+                            <dt class="enrollment-wizard__review-term">Email:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.Email__c}</dd>
+                            <dt class="enrollment-wizard__review-term">Phone:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.PhoneNumber__c}</dd>
+                            <dt class="enrollment-wizard__review-term">Plan Type:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.PlanType__c}</dd>
+                            <dt class="enrollment-wizard__review-term">Coverage Level:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.CoverageLevel__c}</dd>
+                            <dt class="enrollment-wizard__review-term">Effective Date:</dt>
+                            <dd class="slds-dl_horizontal__detail">{enrollmentRecord.EffectiveDate__c}</dd>
+                        </dl>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Error Alert -->
+            <template if:true={errorMessage}>
+                <div role="alert" class="slds-notify slds-notify_alert slds-alert_error slds-m-horizontal_medium slds-m-bottom_medium">
+                    <span class="slds-assistive-text">Error</span>
+                    <p>{errorMessage}</p>
+                </div>
+            </template>
+
+            <!-- Navigation Buttons -->
+            <div slot="footer" class="slds-grid slds-grid_align-spread">
+                <div class="slds-col">
+                    <template if:true={showBack}>
+                        <lightning-button
+                            label={backLabel}
+                            title="Go to previous step"
+                            aria-label="Back to previous step"
+                            onclick={handleBack}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </template>
+                </div>
+                <div class="slds-col slds-text-align_right">
+                    <lightning-button
+                        label={saveDraftLabel}
+                        title="Save as draft"
+                        aria-label="Save enrollment as draft"
+                        class="slds-m-right_small"
+                        onclick={handleSaveDraft}
+                        disabled={isLoading}>
+                    </lightning-button>
+                    <template if:false={isLastStep}>
+                        <lightning-button
+                            label={nextLabel}
+                            title="Proceed to next step"
+                            aria-label="Proceed to next step"
+                            variant="brand"
+                            onclick={handleNext}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </template>
+                    <template if:true={isLastStep}>
+                        <lightning-button
+                            label={validateLabel}
+                            title="Submit enrollment"
+                            aria-label="Validate and submit enrollment"
+                            variant="success"
+                            onclick={handleSubmit}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </template>
+                    <template if:true={isLoading}>
+                        <lightning-spinner
+                            alternative-text="Processing"
+                            aria-label="Processing request"
+                            size="small"
+                            class="slds-m-left_small">
+                        </lightning-spinner>
+                    </template>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
+</template>
