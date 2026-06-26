@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>EnrollmentValidationService</members>
+        <members>EnrollmentValidationServiceTest</members>
+        <members>ValidationErrorWrapper</members>
+        <members>ValidationErrorWrapperTest</members>
+        <name>ApexClass</name>
+    </types><types>
         <members>County</members>
         <members>Coverage_Level</members>
         <members>Enrollment_Status</members>
@@ -61,6 +67,6 @@
         <members>Enrollment_Request__c.DOB_Not_Future_Date</members>
         <members>Enrollment_Request__c.EffectiveDate_Not_Before_Current</members>
         <name>ValidationRule</name>
-    </types>    
+    </types>
     <version>62.0</version>
 </Package>
