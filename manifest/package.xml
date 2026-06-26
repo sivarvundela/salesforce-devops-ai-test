@@ -15,9 +15,33 @@
         <name>CustomLabels</name>
     </types>
     <types>
+        <members>Integration_Log__c</members>
         <members>Member__c</members>
         <members>Enrollment_Request__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Enrollment_Request__c.EnrollmentNumber__c</members>
+        <members>Enrollment_Request__c.IntegrationStatus__c</members>
+        <members>Enrollment_Request__c.LastIntegrationSync__c</members>
+        <members>Enrollment_Request__c.MemberID__c</members>
+        <members>Integration_Log__c.Correlation_ID__c</members>
+        <members>Integration_Log__c.Enrollment_Request__c</members>
+        <members>Integration_Log__c.Next_Retry_Time__c</members>
+        <members>Integration_Log__c.Request_Body__c</members>
+        <members>Integration_Log__c.Request_Time__c</members>
+        <members>Integration_Log__c.Response_Body__c</members>
+        <members>Integration_Log__c.Response_Time__c</members>
+        <members>Integration_Log__c.Retry_Count__c</members>
+        <members>Integration_Log__c.Status__c</members>
+        <members>Integration_Log__c.System_Name__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Coverage__c.CoverageEffectiveDate_Not_Before_Current</members>
+        <members>Enrollment_Request__c.DOB_Not_Future_Date</members>
+        <members>Enrollment_Request__c.EffectiveDate_Not_Before_Current</members>
+        <name>ValidationRule</name>
     </types>
     <version>62.0</version>
 </Package>
