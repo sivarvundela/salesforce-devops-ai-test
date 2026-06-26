@@ -1,0 +1,253 @@
+<template>
+    <div class="enrollment-member-form">
+        <!-- Member Information Section -->
+        <lightning-card>
+            <h2 slot="title" class="slds-text-heading_small">{memberInfoLabel}</h2>
+            <div class="slds-m-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="First Name"
+                            value={formData.FirstName__c}
+                            field-level-help="Required"
+                            required
+                            data-field="FirstName__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Middle Name"
+                            value={formData.MiddleName__c}
+                            data-field="MiddleName__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Last Name"
+                            value={formData.LastName__c}
+                            field-level-help="Required"
+                            required
+                            data-field="LastName__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Date of Birth"
+                            type="date"
+                            value={formData.DateOfBirth__c}
+                            field-level-help="Required"
+                            required
+                            data-field="DateOfBirth__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="Gender"
+                            value={formData.Gender__c}
+                            options={genderOptions}
+                            required
+                            data-field="Gender__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="Marital Status"
+                            value={formData.MaritalStatus__c}
+                            options={maritalStatusOptions}
+                            data-field="MaritalStatus__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="SSN"
+                            value={formData.SSN__c}
+                            placeholder="XXX-XX-XXXX"
+                            data-field="SSN__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="Preferred Language"
+                            value={formData.PreferredLanguage__c}
+                            options={languageOptions}
+                            data-field="PreferredLanguage__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+
+        <!-- Contact Information Section -->
+        <lightning-card class="slds-m-top_medium">
+            <h2 slot="title" class="slds-text-heading_small">{contactInfoLabel}</h2>
+            <div class="slds-m-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Email"
+                            type="email"
+                            value={formData.Email__c}
+                            field-level-help="Required"
+                            required
+                            data-field="Email__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Phone Number"
+                            type="tel"
+                            value={formData.PhoneNumber__c}
+                            field-level-help="Required"
+                            required
+                            data-field="PhoneNumber__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+
+        <!-- Address Information Section -->
+        <lightning-card class="slds-m-top_medium">
+            <h2 slot="title" class="slds-text-heading_small">{addressInfoLabel}</h2>
+            <div class="slds-m-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-input
+                            label="Address Line 1"
+                            value={formData.AddressLine1__c}
+                            field-level-help="Required"
+                            required
+                            data-field="AddressLine1__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-input
+                            label="Address Line 2"
+                            value={formData.AddressLine2__c}
+                            data-field="AddressLine2__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="City"
+                            value={formData.City__c}
+                            required
+                            data-field="City__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="State"
+                            value={formData.State__c}
+                            options={stateOptions}
+                            required
+                            data-field="State__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="ZIP Code"
+                            value={formData.ZIPCode__c}
+                            required
+                            data-field="ZIPCode__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="County"
+                            value={formData.County__c}
+                            options={countyOptions}
+                            data-field="County__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+
+        <!-- Coverage Information Section -->
+        <lightning-card class="slds-m-top_medium">
+            <h2 slot="title" class="slds-text-heading_small">{coverageInfoLabel}</h2>
+            <div class="slds-m-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="Plan Type"
+                            value={formData.PlanType__c}
+                            options={planTypeOptions}
+                            required
+                            data-field="PlanType__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Plan Name"
+                            value={formData.PlanName__c}
+                            data-field="PlanName__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-combobox
+                            label="Coverage Level"
+                            value={formData.CoverageLevel__c}
+                            options={coverageLevelOptions}
+                            required
+                            data-field="CoverageLevel__c"
+                            onchange={handleInputChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Effective Date"
+                            type="date"
+                            value={formData.EffectiveDate__c}
+                            required
+                            data-field="EffectiveDate__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Primary Care Provider"
+                            value={formData.PrimaryCareProvider__c}
+                            data-field="PrimaryCareProvider__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <lightning-input
+                            label="Employer Group"
+                            value={formData.EmployerGroup__c}
+                            data-field="EmployerGroup__c"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+
+        <template if:true={hasErrors}>
+            <div role="alert" class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium">
+                <span class="slds-assistive-text">Error</span>
+                <p>Please correct the highlighted fields before continuing.</p>
+            </div>
+        </template>
+    </div>
+</template>

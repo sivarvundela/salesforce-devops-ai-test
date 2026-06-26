@@ -1,0 +1,37 @@
+.enrollment-uploader {
+    padding: var(--slds-g-spacing-4);
+}
+
+.enrollment-uploader__drop-zone {
+    border: var(--slds-g-sizing-border-2) dashed var(--slds-g-color-border-1);
+    border-radius: var(--slds-g-radius-border-1);
+    padding: var(--slds-g-spacing-4);
+    text-align: center;
+    transition: background-color 0.2s;
+    background-color: var(--slds-g-color-surface-1);
+}
+
+.enrollment-uploader__drop-zone_active {
+    background-color: var(--slds-g-color-accent-light-1);
+    border-color: var(--slds-g-color-brand-base-50);
+}
+
+.enrollment-uploader__drop-content {
+    flex-direction: column;
+}
+
+.enrollment-uploader__hint {
+    color: var(--slds-g-color-border-1);
+}
+
+.enrollment-uploader__file-item {
+    padding: var(--slds-g-spacing-2) 0;
+}
+
+.enrollment-uploader__file-type {
+    font-weight: var(--slds-g-font-weight-5);
+}
+
+.enrollment-uploader__file-size {
+    color: var(--slds-g-color-border-1);
+}
