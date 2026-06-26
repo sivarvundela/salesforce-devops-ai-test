@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Integration Endpoint</label>
+    <pluralLabel>Integration Endpoints</pluralLabel>
+    <description>Centralized configuration for external integration endpoints including URLs, timeouts, and retry policies. Used to route enrollment system callouts without hardcoding endpoints in Apex or Flows.</description>
+</CustomObject>

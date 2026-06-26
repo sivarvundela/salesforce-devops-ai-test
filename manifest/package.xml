@@ -18,6 +18,7 @@
         <members>Integration_Log__c</members>
         <members>Member__c</members>
         <members>Enrollment_Request__c</members>
+        <members>Integration_Endpoint__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -38,10 +39,28 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>Integration_Endpoint__mdt.Billing_System</members>
+        <members>Integration_Endpoint__mdt.CRM</members>
+        <members>Integration_Endpoint__mdt.Core_Admin_System</members>
+        <members>Integration_Endpoint__mdt.ID_Card_Vendor</members>
+        <members>Integration_Endpoint__mdt.Notification_Service</members>
+        <members>Integration_Endpoint__mdt.Provider_Management</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>Billing_System</members>
+        <members>CRM</members>
+        <members>Core_Admin_System</members>
+        <members>ID_Card_Vendor</members>
+        <members>Notification_Service</members>
+        <members>Provider_Management</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
         <members>Coverage__c.CoverageEffectiveDate_Not_Before_Current</members>
         <members>Enrollment_Request__c.DOB_Not_Future_Date</members>
         <members>Enrollment_Request__c.EffectiveDate_Not_Before_Current</members>
         <name>ValidationRule</name>
-    </types>
+    </types>    
     <version>62.0</version>
 </Package>

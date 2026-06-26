@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retry_Backoff_Seconds__c</fullName>
+    <label>Retry Backoff Seconds</label>
+    <type>Number</type>
+    <precision>5</precision>
+    <scale>0</scale>
+    <defaultValue>5</defaultValue>
+    <required>true</required>
+    <description>Seconds to wait between consecutive retry attempts (exponential backoff multiplier). Prevents retry storms against degraded endpoints.</description>
+</CustomField>
