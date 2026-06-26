@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>System_Name__c</fullName>
+    <label>System Name</label>
+    <type>Text</type>
+    <length>100</length>
+    <required>true</required>
+    <description>Unique identifier for the external system (e.g., 'Core Admin System', 'Billing System'). Used as lookup key in Apex and Flows.</description>
+</CustomField>
