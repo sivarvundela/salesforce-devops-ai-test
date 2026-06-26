@@ -1,96 +1,92 @@
 /**
- * @description Wrapper class for structured validation error responses, providing
- *              a consistent error format across all enrollment validation services.
+ * @description Structured wrapper for validation error responses across enrollment services.
  */
 public with sharing class ValidationErrorWrapper {
-    /** @description Whether validation passed (true) or failed (false). */
-    public Boolean isValid { get; private set; }
 
-    /** @description List of error messages describing validation failures. */
+    /** @description List of error messages collected during validation. */
     public List<String> errors { get; private set; }
 
-    /** @description Type of validation (e.g., FIELD_FORMAT, DUPLICATE, ELIGIBILITY). */
-    public String validationType { get; private set; }
+    /** @description List of warning messages collected during validation. */
+    public List<String> warnings { get; private set; }
 
-    /** @description Field API name that failed validation, if applicable. */
-    public String failedField { get; private set; }
+    /** @description Whether validation passed with no errors. */
+    public Boolean isValid { get; private set; }
+
+    /** @description Optional field-level error map keyed by field API name. */
+    public Map<String, String> fieldErrors { get; private set; }
 
     /**
-     * @description Constructor for a successful validation result (no errors).
+     * @description Initializes a valid wrapper with empty error and warning collections.
      */
     public ValidationErrorWrapper() {
-        this.isValid = true;
         this.errors = new List<String>();
-        this.validationType = null;
-        this.failedField = null;
+        this.warnings = new List<String>();
+        this.fieldErrors = new Map<String, String>();
+        this.isValid = true;
     }
 
     /**
-     * @description Constructor for a failed validation with error message and type.
-     * @param errorMessage The validation error message.
-     * @param validationType The type of validation that failed.
+     * @description Adds an error message and marks the wrapper as invalid.
+     * @param message The error message to record.
      */
-    public ValidationErrorWrapper(String errorMessage, String validationType) {
-        this.isValid = false;
-        this.errors = new List<String>{ errorMessage };
-        this.validationType = validationType;
-        this.failedField = null;
+    public void addError(String message) {
+        if (String.isNotBlank(message)) {
+            this.errors.add(message);
+            this.isValid = false;
+        }
     }
 
     /**
-     * @description Constructor for a failed validation with error message, type, and field.
-     * @param errorMessage The validation error message.
-     * @param validationType The type of validation that failed.
-     * @param failedField The field API name that failed validation.
+     * @description Adds a field-level error and marks the wrapper as invalid.
+     * @param fieldName The API name of the field with the error.
+     * @param message The error message for the field.
      */
-    public ValidationErrorWrapper(String errorMessage, String validationType, String failedField) {
-        this.isValid = false;
-        this.errors = new List<String>{ errorMessage };
-        this.validationType = validationType;
-        this.failedField = failedField;
+    public void addFieldError(String fieldName, String message) {
+        if (String.isNotBlank(fieldName) && String.isNotBlank(message)) {
+            this.fieldErrors.put(fieldName, message);
+            this.errors.add(fieldName + ': ' + message);
+            this.isValid = false;
+        }
     }
 
     /**
-     * @description Adds an error message to an existing validation result.
-     * @param errorMessage The additional error message.
+     * @description Adds a warning message without marking the wrapper as invalid.
+     * @param message The warning message to record.
      */
-    public void addError(String errorMessage) {
-        this.isValid = false;
-        this.errors.add(errorMessage);
+    public void addWarning(String message) {
+        if (String.isNotBlank(message)) {
+            this.warnings.add(message);
+        }
     }
 
     /**
-     * @description Adds an error message and marks validation type and failed field.
-     * @param errorMessage The error message.
-     * @param fieldName The field that failed.
+     * @description Merges all errors and warnings from another wrapper into this one.
+     * @param other The ValidationErrorWrapper whose errors and warnings to absorb.
      */
-    public void addError(String errorMessage, String fieldName) {
-        this.isValid = false;
-        this.errors.add(errorMessage);
-        this.failedField = fieldName;
+    public void combine(ValidationErrorWrapper other) {
+        if (other == null) { return; }
+        this.errors.addAll(other.errors);
+        this.warnings.addAll(other.warnings);
+        this.fieldErrors.putAll(other.fieldErrors);
+        if (!other.isValid) {
+            this.isValid = false;
+        }
     }
 
     /**
-     * @description Returns the first error message, or null if validation passed.
-     * @return First error string, or null if no errors.
-     */
-    public String getFirstError() {
-        return this.errors.isEmpty() ? null : this.errors.get(0);
-    }
-
-    /**
-     * @description Returns all error messages as a semicolon-separated string.
-     * @return Concatenated error messages, or empty string if no errors.
+     * @description Returns a single concatenated error string for simple display.
+     * @return Newline-delimited string of all error messages, or empty string if none.
      */
     public String getErrorSummary() {
-        return this.errors.isEmpty() ? '' : String.join(this.errors, '; ');
+        if (this.errors.isEmpty()) { return ''; }
+        return String.join(this.errors, '\n');
     }
 
     /**
-     * @description Returns the count of accumulated errors.
-     * @return Number of error messages.
+     * @description Returns the count of recorded errors.
+     * @return Integer count of errors.
      */
-    public Integer getErrorCount() {
+    public Integer errorCount() {
         return this.errors.size();
     }
 }
