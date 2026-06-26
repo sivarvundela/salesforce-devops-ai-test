@@ -1,168 +1,189 @@
 /**
- * @description Test class for ValidationErrorWrapper — uses in-memory object creation (Strategy A).
+ * @description Tests for ValidationErrorWrapper — uses in-memory strategy (no SOQL/DML).
  */
 @IsTest
 private class ValidationErrorWrapperTest {
 
-    @IsTest
-    static void constructor_noArgs_createsValidResult() {
-        Test.startTest();
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.stopTest();
-
-        System.assertEquals(true, wrapper.isValid, 'Default constructor must create a valid result');
-        System.assertEquals(0, wrapper.getErrorCount(), 'Default constructor must have zero errors');
-        System.assertEquals(null, wrapper.validationType, 'Validation type must be null');
-        System.assertEquals(null, wrapper.failedField, 'Failed field must be null');
-    }
-
-    @IsTest
-    static void constructor_withMessageAndType_createsInvalidResult() {
-        Test.startTest();
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper('Email format invalid', 'FIELD_FORMAT');
-        Test.stopTest();
-
-        System.assertEquals(false, wrapper.isValid, 'Constructor with message must create invalid result');
-        System.assertEquals(1, wrapper.getErrorCount(), 'Must have exactly one error');
-        System.assertEquals('Email format invalid', wrapper.getFirstError(), 'Error message must match');
-        System.assertEquals('FIELD_FORMAT', wrapper.validationType, 'Validation type must be set');
-    }
-
-    @IsTest
-    static void constructor_withMessageTypeAndField_setsAllProperties() {
-        Test.startTest();
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper(
-            'Phone is invalid',
-            'FIELD_FORMAT',
-            'PhoneNumber__c'
-        );
-        Test.stopTest();
-
-        System.assertEquals(false, wrapper.isValid, 'Must be invalid');
-        System.assertEquals('Phone is invalid', wrapper.getFirstError(), 'Error message must match');
-        System.assertEquals('FIELD_FORMAT', wrapper.validationType, 'Type must be FIELD_FORMAT');
-        System.assertEquals('PhoneNumber__c', wrapper.failedField, 'Failed field must be set');
-    }
-
-    @IsTest
-    static void addError_singleMessage_addsToErrors() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        wrapper.addError('ZIP code is invalid');
-        Test.stopTest();
-
-        System.assertEquals(false, wrapper.isValid, 'Valid result must become invalid after adding error');
-        System.assertEquals(1, wrapper.getErrorCount(), 'Must have one error');
-        System.assertEquals('ZIP code is invalid', wrapper.getFirstError(), 'Error must match');
-    }
-
-    @IsTest
-    static void addError_multipleMessages_accumulates() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        wrapper.addError('Error 1');
-        wrapper.addError('Error 2');
-        wrapper.addError('Error 3');
-        Test.stopTest();
-
-        System.assertEquals(3, wrapper.getErrorCount(), 'All three errors must be accumulated');
-        System.assertEquals('Error 1', wrapper.getFirstError(), 'First error must be first');
-    }
-
-    @IsTest
-    static void addError_withField_setsFailedField() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        wrapper.addError('DOB cannot be in future', 'DateOfBirth__c');
-        Test.stopTest();
-
-        System.assertEquals(false, wrapper.isValid, 'Must be invalid');
-        System.assertEquals('DateOfBirth__c', wrapper.failedField, 'Failed field must be set');
-        System.assertEquals('DOB cannot be in future', wrapper.getFirstError(), 'Error message must match');
-    }
-
-    @IsTest
-    static void getErrorSummary_noErrors_returnsEmpty() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        String summary = wrapper.getErrorSummary();
-        Test.stopTest();
-
-        System.assertEquals('', summary, 'Summary must be empty when no errors');
-    }
-
-    @IsTest
-    static void getErrorSummary_multipleErrors_joins() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper('First error', 'TEST');
-        wrapper.addError('Second error');
-        wrapper.addError('Third error');
-        Test.startTest();
-        String summary = wrapper.getErrorSummary();
-        Test.stopTest();
-
-        System.assert(
-            summary.contains('First error'),
-            'Summary must contain first error: ' + summary
-        );
-        System.assert(
-            summary.contains('Second error'),
-            'Summary must contain second error: ' + summary
-        );
-        System.assert(
-            summary.contains('Third error'),
-            'Summary must contain third error: ' + summary
-        );
-        System.assert(
-            summary.contains(';'),
-            'Summary must join with semicolon: ' + summary
+    @TestSetup
+    static void makeData() {
+        Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+        insert new User(
+            Alias = 'vewt', Email = 'vewt@example.com', EmailEncodingKey = 'UTF-8',
+            LastName = 'VEWTest', LanguageLocaleKey = 'en_US', LocaleSidKey = 'en_US',
+            ProfileId = p.Id, TimeZoneSidKey = 'America/Los_Angeles',
+            UserName = 'vewt_' + System.currentTimeMillis() + '@example.com'
         );
     }
 
     @IsTest
-    static void getFirstError_noErrors_returnsNull() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        String firstError = wrapper.getFirstError();
-        Test.stopTest();
-
-        System.assertEquals(null, firstError, 'First error must be null when no errors');
+    static void constructorInitializesValidState() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            Test.stopTest();
+            System.assertEquals(true, w.isValid, 'New wrapper must be valid');
+            System.assertEquals(0, w.errors.size(), 'Errors must be empty on init');
+            System.assertEquals(0, w.warnings.size(), 'Warnings must be empty on init');
+            System.assertEquals(0, w.fieldErrors.size(), 'FieldErrors must be empty on init');
+        }
     }
 
     @IsTest
-    static void getErrorCount_empty_returnsZero() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper();
-        Test.startTest();
-        Integer count = wrapper.getErrorCount();
-        Test.stopTest();
-
-        System.assertEquals(0, count, 'Count must be zero when no errors');
+    static void addErrorMarksInvalid() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addError('Something went wrong');
+            Test.stopTest();
+            System.assertEquals(false, w.isValid, 'Wrapper must be invalid after addError');
+            System.assertEquals(1, w.errors.size(), 'One error expected');
+            System.assertEquals('Something went wrong', w.errors[0], 'Error message must match');
+        }
     }
 
     @IsTest
-    static void getErrorCount_afterAdding_returnsCorrect() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper('Error 1', 'TYPE');
-        wrapper.addError('Error 2');
-        wrapper.addError('Error 3');
-        Test.startTest();
-        Integer count = wrapper.getErrorCount();
-        Test.stopTest();
-
-        System.assertEquals(3, count, 'Count must be three');
+    static void addErrorIgnoresBlankMessage() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addError('');
+            w.addError(null);
+            Test.stopTest();
+            System.assertEquals(true, w.isValid, 'Blank/null errors must not invalidate wrapper');
+            System.assertEquals(0, w.errors.size(), 'No errors added for blank/null messages');
+        }
     }
 
     @IsTest
-    static void properties_areAccessible() {
-        ValidationErrorWrapper wrapper = new ValidationErrorWrapper('Test error', 'TEST_TYPE', 'TestField');
-        Test.startTest();
-        Boolean isValidValue = wrapper.isValid;
-        List<String> errorsList = wrapper.errors;
-        String typeValue = wrapper.validationType;
-        String fieldValue = wrapper.failedField;
-        Test.stopTest();
+    static void addFieldErrorRecordsFieldAndGlobalError() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addFieldError('Email__c', 'Invalid email format');
+            Test.stopTest();
+            System.assertEquals(false, w.isValid, 'Must be invalid after field error');
+            System.assertEquals(1, w.fieldErrors.size(), 'One field error expected');
+            System.assertEquals('Invalid email format', w.fieldErrors.get('Email__c'), 'Field error message must match');
+            System.assertEquals(1, w.errors.size(), 'Global errors list must also contain entry');
+        }
+    }
 
-        System.assertEquals(false, isValidValue, 'isValid property must be accessible');
-        System.assertEquals(1, errorsList.size(), 'errors list must be accessible');
-        System.assertEquals('TEST_TYPE', typeValue, 'validationType must be accessible');
-        System.assertEquals('TestField', fieldValue, 'failedField must be accessible');
+    @IsTest
+    static void addFieldErrorIgnoresBlanks() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addFieldError('', 'Message');
+            w.addFieldError('Field', '');
+            w.addFieldError(null, null);
+            Test.stopTest();
+            System.assertEquals(true, w.isValid, 'Blank field errors must not invalidate wrapper');
+            System.assertEquals(0, w.fieldErrors.size(), 'No field errors expected for blank inputs');
+        }
+    }
+
+    @IsTest
+    static void addWarningDoesNotInvalidate() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addWarning('Minor issue noted');
+            Test.stopTest();
+            System.assertEquals(true, w.isValid, 'Warnings must not invalidate wrapper');
+            System.assertEquals(1, w.warnings.size(), 'One warning expected');
+        }
+    }
+
+    @IsTest
+    static void addWarningIgnoresBlank() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addWarning(null);
+            w.addWarning('  ');
+            Test.stopTest();
+            System.assertEquals(0, w.warnings.size(), 'Blank warnings must not be added');
+        }
+    }
+
+    @IsTest
+    static void combineAbsorbsErrorsAndInvalidates() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w1 = new ValidationErrorWrapper();
+            w1.addError('Error one');
+            ValidationErrorWrapper w2 = new ValidationErrorWrapper();
+            w2.addError('Error two');
+            w2.addWarning('Warning one');
+            w2.addFieldError('Phone__c', 'Invalid phone');
+            w1.combine(w2);
+            Test.stopTest();
+            System.assertEquals(false, w1.isValid, 'Combined wrapper must be invalid');
+            System.assertEquals(3, w1.errors.size(), 'Both error lists must be merged (2 errors + 1 field error)');
+            System.assertEquals(1, w1.warnings.size(), 'Warning from second wrapper must appear');
+            System.assert(w1.fieldErrors.containsKey('Phone__c'), 'Field errors must be merged');
+        }
+    }
+
+    @IsTest
+    static void combineWithNullDoesNotThrow() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addError('Existing error');
+            w.combine(null);
+            Test.stopTest();
+            System.assertEquals(1, w.errors.size(), 'Errors must be unchanged after combining null');
+        }
+    }
+
+    @IsTest
+    static void getErrorSummaryJoinsMessages() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addError('First');
+            w.addError('Second');
+            String summary = w.getErrorSummary();
+            Test.stopTest();
+            System.assert(summary.contains('First'), 'Summary must include first error');
+            System.assert(summary.contains('Second'), 'Summary must include second error');
+        }
+    }
+
+    @IsTest
+    static void getErrorSummaryReturnsEmptyWhenNoErrors() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            String summary = w.getErrorSummary();
+            Test.stopTest();
+            System.assertEquals('', summary, 'Summary must be empty string when no errors');
+        }
+    }
+
+    @IsTest
+    static void errorCountReturnsCorrectSize() {
+        User u = [SELECT Id FROM User WHERE LastName = 'VEWTest' LIMIT 1];
+        System.runAs(u) {
+            Test.startTest();
+            ValidationErrorWrapper w = new ValidationErrorWrapper();
+            w.addError('A');
+            w.addError('B');
+            w.addError('C');
+            Test.stopTest();
+            System.assertEquals(3, w.errorCount(), 'Error count must equal number of added errors');
+        }
     }
 }

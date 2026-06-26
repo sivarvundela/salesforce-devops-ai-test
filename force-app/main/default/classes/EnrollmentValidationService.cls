@@ -1,154 +1,198 @@
 /**
- * @description Validates enrollment request records for required fields, email format,
- *              phone format, ZIP code format, and date constraints. Returns structured
- *              error responses via ValidationErrorWrapper.
+ * @description Validates Enrollment_Request__c records for required fields, format constraints,
+ *              and date rules. Returns a ValidationErrorWrapper with all collected errors.
  */
 public with sharing class EnrollmentValidationService {
-    private static final String EMAIL_PATTERN = '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2}$';
-    private static final String PHONE_PATTERN = '^\\d{10}$';
-    private static final String ZIP_PATTERN = '^\\d{5}(-\\d{4})?$';
+
+    private static final String EMAIL_REGEX = '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$';
+    private static final String PHONE_REGEX = '^[0-9\\-\\(\\)\\+\\s]{10,15}$';
+    private static final String ZIP_REGEX = '^\\d{5}(-\\d{4})?$';
+    private static final Integer MIN_AGE_YEARS = 0;
+    private static final Integer MAX_AGE_YEARS = 130;
+
+    /** @description Typed exception for unrecoverable validation configuration errors. */
+    public class EnrollmentValidationException extends Exception {}
 
     /**
-     * @description Validates an enrollment request for required fields and format constraints.
-     * @param enrollment The Enrollment_Request__c record to validate.
-     * @return ValidationErrorWrapper with validation result and any error messages.
+     * @description Validates all rules for a single enrollment request.
+     * @param req The Enrollment_Request__c record to validate.
+     * @return ValidationErrorWrapper containing all errors found, or valid if none.
      */
-    public static ValidationErrorWrapper validateEnrollment(Enrollment_Request__c enrollment) {
+    public static ValidationErrorWrapper validate(Enrollment_Request__c req) {
         ValidationErrorWrapper result = new ValidationErrorWrapper();
-
-        if (enrollment == null) {
-            return new ValidationErrorWrapper('Enrollment record is required', 'NULL_RECORD');
-        }
-
-        validateRequiredFields(enrollment, result);
-        if (!result.isValid) {
+        if (req == null) {
+            result.addError('Enrollment request record must not be null.');
             return result;
         }
-
-        validateEmailFormat(enrollment.Email__c, result);
-        validatePhoneFormat(enrollment.PhoneNumber__c, result);
-        validateZipCodeFormat(enrollment.ZIPCode__c, result);
-        validateDateConstraints(enrollment, result);
-
+        validatePersonFields(req, result);
+        validateContactFields(req, result);
+        validateAddressFields(req, result);
+        validateEnrollmentFields(req, result);
         return result;
     }
 
     /**
-     * @description Validates that all required fields are populated.
-     * @param enrollment The enrollment record.
-     * @param result The validation result wrapper to accumulate errors.
+     * @description Validates all enrollment requests in a list, keyed by record index.
+     * @param requests List of Enrollment_Request__c records to validate.
+     * @return List of ValidationErrorWrapper instances, one per input record.
      */
-    private static void validateRequiredFields(
-        Enrollment_Request__c enrollment,
-        ValidationErrorWrapper result
-    ) {
-        if (String.isBlank(enrollment.FirstName__c)) {
-            result.addError('First Name is required', 'FirstName__c');
+    public static List<ValidationErrorWrapper> validateAll(List<Enrollment_Request__c> requests) {
+        List<ValidationErrorWrapper> results = new List<ValidationErrorWrapper>();
+        if (requests == null || requests.isEmpty()) {
+            return results;
         }
-        if (String.isBlank(enrollment.LastName__c)) {
-            result.addError('Last Name is required', 'LastName__c');
+        for (Enrollment_Request__c req : requests) {
+            results.add(validate(req));
         }
-        if (String.isBlank(enrollment.Email__c)) {
-            result.addError('Email is required', 'Email__c');
+        return results;
+    }
+
+    /**
+     * @description Validates name and date-of-birth fields.
+     * @param req The enrollment request.
+     * @param result The wrapper to accumulate errors into.
+     */
+    private static void validatePersonFields(Enrollment_Request__c req, ValidationErrorWrapper result) {
+        if (String.isBlank(req.FirstName__c)) {
+            result.addFieldError('FirstName__c', 'First name is required.');
         }
-        if (String.isBlank(enrollment.PhoneNumber__c)) {
-            result.addError('Phone Number is required', 'PhoneNumber__c');
+        if (String.isBlank(req.LastName__c)) {
+            result.addFieldError('LastName__c', 'Last name is required.');
         }
-        if (enrollment.DateOfBirth__c == null) {
-            result.addError('Date of Birth is required', 'DateOfBirth__c');
-        }
-        if (String.isBlank(enrollment.SSN__c)) {
-            result.addError('SSN is required', 'SSN__c');
-        }
-        if (String.isBlank(enrollment.AddressLine1__c)) {
-            result.addError('Address Line 1 is required', 'AddressLine1__c');
-        }
-        if (String.isBlank(enrollment.City__c)) {
-            result.addError('City is required', 'City__c');
-        }
-        if (String.isBlank(enrollment.State__c)) {
-            result.addError('State is required', 'State__c');
-        }
-        if (String.isBlank(enrollment.ZIPCode__c)) {
-            result.addError('ZIP Code is required', 'ZIPCode__c');
-        }
-        if (enrollment.EffectiveDate__c == null) {
-            result.addError('Effective Date is required', 'EffectiveDate__c');
+        if (req.DateOfBirth__c == null) {
+            result.addFieldError('DateOfBirth__c', 'Date of birth is required.');
+        } else {
+            validateDateOfBirth(req.DateOfBirth__c, result);
         }
     }
 
     /**
-     * @description Validates email format using regex pattern.
-     * @param email The email address to validate.
-     * @param result The validation result wrapper.
+     * @description Validates email and phone contact fields.
+     * @param req The enrollment request.
+     * @param result The wrapper to accumulate errors into.
      */
-    private static void validateEmailFormat(String email, ValidationErrorWrapper result) {
-        if (String.isBlank(email)) {
+    private static void validateContactFields(Enrollment_Request__c req, ValidationErrorWrapper result) {
+        if (String.isBlank(req.Email__c)) {
+            result.addFieldError('Email__c', 'Email address is required.');
+        } else if (!isValidEmail(req.Email__c)) {
+            result.addFieldError('Email__c', 'Email address format is invalid.');
+        }
+        if (String.isBlank(req.PhoneNumber__c)) {
+            result.addFieldError('PhoneNumber__c', 'Phone number is required.');
+        } else if (!isValidPhone(req.PhoneNumber__c)) {
+            result.addFieldError('PhoneNumber__c', 'Phone number format is invalid. Use 10-15 digits.');
+        }
+    }
+
+    /**
+     * @description Validates address fields including ZIP code format.
+     * @param req The enrollment request.
+     * @param result The wrapper to accumulate errors into.
+     */
+    private static void validateAddressFields(Enrollment_Request__c req, ValidationErrorWrapper result) {
+        if (String.isBlank(req.AddressLine1__c)) {
+            result.addFieldError('AddressLine1__c', 'Address line 1 is required.');
+        }
+        if (String.isBlank(req.City__c)) {
+            result.addFieldError('City__c', 'City is required.');
+        }
+        if (String.isBlank(req.State__c)) {
+            result.addFieldError('State__c', 'State is required.');
+        }
+        if (String.isBlank(req.ZIPCode__c)) {
+            result.addFieldError('ZIPCode__c', 'ZIP code is required.');
+        } else if (!isValidZip(req.ZIPCode__c)) {
+            result.addFieldError('ZIPCode__c', 'ZIP code must be 5 digits or ZIP+4 format (e.g. 12345 or 12345-6789).');
+        }
+    }
+
+    /**
+     * @description Validates coverage-specific enrollment fields and effective date.
+     * @param req The enrollment request.
+     * @param result The wrapper to accumulate errors into.
+     */
+    private static void validateEnrollmentFields(Enrollment_Request__c req, ValidationErrorWrapper result) {
+        if (String.isBlank(req.PlanName__c)) {
+            result.addFieldError('PlanName__c', 'Plan name is required.');
+        }
+        if (String.isBlank(req.PlanType__c)) {
+            result.addFieldError('PlanType__c', 'Plan type is required.');
+        }
+        if (req.EffectiveDate__c == null) {
+            result.addFieldError('EffectiveDate__c', 'Coverage effective date is required.');
+        } else {
+            validateEffectiveDate(req.EffectiveDate__c, result);
+        }
+        if (String.isBlank(req.SSN__c)) {
+            result.addFieldError('SSN__c', 'Social Security Number is required.');
+        }
+    }
+
+    /**
+     * @description Validates that date of birth represents a plausible age.
+     * @param dob The date of birth to validate.
+     * @param result The wrapper to accumulate errors into.
+     */
+    private static void validateDateOfBirth(Date dob, ValidationErrorWrapper result) {
+        if (dob >= Date.today()) {
+            result.addFieldError('DateOfBirth__c', 'Date of birth must be in the past.');
             return;
         }
-        if (!Pattern.matches(EMAIL_PATTERN, email)) {
-            result.addError(
-                'Email format is invalid. Please enter a valid email address.',
-                'Email__c'
-            );
+        Integer age = calculateAge(dob);
+        if (age > MAX_AGE_YEARS) {
+            result.addFieldError('DateOfBirth__c', 'Date of birth indicates an implausible age (over ' + MAX_AGE_YEARS + ' years).');
         }
     }
 
     /**
-     * @description Validates phone format (must be exactly 10 digits).
-     * @param phone The phone number to validate.
-     * @param result The validation result wrapper.
+     * @description Validates that the effective date is not in the past.
+     * @param effectiveDate The coverage effective date to validate.
+     * @param result The wrapper to accumulate errors into.
      */
-    private static void validatePhoneFormat(String phone, ValidationErrorWrapper result) {
-        if (String.isBlank(phone)) {
-            return;
-        }
-        String digitsOnly = phone.replaceAll('[^0-9]', '');
-        if (!Pattern.matches(PHONE_PATTERN, digitsOnly)) {
-            result.addError(
-                'Phone number must be exactly 10 digits.',
-                'PhoneNumber__c'
-            );
+    private static void validateEffectiveDate(Date effectiveDate, ValidationErrorWrapper result) {
+        if (effectiveDate < Date.today()) {
+            result.addFieldError('EffectiveDate__c', 'Coverage effective date cannot be in the past.');
         }
     }
 
     /**
-     * @description Validates ZIP code format (5 digits or 5+4 format).
-     * @param zipCode The ZIP code to validate.
-     * @param result The validation result wrapper.
+     * @description Calculates age in full years from date of birth to today.
+     * @param dob The date of birth.
+     * @return Integer age in years.
      */
-    private static void validateZipCodeFormat(String zipCode, ValidationErrorWrapper result) {
-        if (String.isBlank(zipCode)) {
-            return;
+    private static Integer calculateAge(Date dob) {
+        Date today = Date.today();
+        Integer age = today.year() - dob.year();
+        if (today.month() < dob.month() || (today.month() == dob.month() && today.day() < dob.day())) {
+            age -= 1;
         }
-        if (!Pattern.matches(ZIP_PATTERN, zipCode)) {
-            result.addError(
-                'ZIP code must be in format 12345 or 12345-6789.',
-                'ZIPCode__c'
-            );
-        }
+        return age;
     }
 
     /**
-     * @description Validates date constraints (DOB must be in past, effective date must be in future or today).
-     * @param enrollment The enrollment record.
-     * @param result The validation result wrapper.
+     * @description Checks whether an email string matches the expected email pattern.
+     * @param email The email string to test.
+     * @return True if the format is valid.
      */
-    private static void validateDateConstraints(
-        Enrollment_Request__c enrollment,
-        ValidationErrorWrapper result
-    ) {
-        if (enrollment.DateOfBirth__c != null && enrollment.DateOfBirth__c > Date.today()) {
-            result.addError(
-                'Date of Birth cannot be in the future.',
-                'DateOfBirth__c'
-            );
-        }
-        if (enrollment.EffectiveDate__c != null && enrollment.EffectiveDate__c < Date.today()) {
-            result.addError(
-                'Effective Date must be today or in the future.',
-                'EffectiveDate__c'
-            );
-        }
+    private static Boolean isValidEmail(String email) {
+        return Pattern.matches(EMAIL_REGEX, email.trim());
+    }
+
+    /**
+     * @description Checks whether a phone string matches the accepted phone pattern.
+     * @param phone The phone string to test.
+     * @return True if the format is valid.
+     */
+    private static Boolean isValidPhone(String phone) {
+        return Pattern.matches(PHONE_REGEX, phone.trim());
+    }
+
+    /**
+     * @description Checks whether a ZIP code string matches 5-digit or ZIP+4 format.
+     * @param zip The ZIP code string to test.
+     * @return True if the format is valid.
+     */
+    private static Boolean isValidZip(String zip) {
+        return Pattern.matches(ZIP_REGEX, zip.trim());
     }
 }
