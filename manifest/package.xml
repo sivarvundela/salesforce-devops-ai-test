@@ -5,6 +5,9 @@
         <members>EnrollmentValidationServiceTest</members>
         <members>ValidationErrorWrapper</members>
         <members>ValidationErrorWrapperTest</members>
+        <members>EnrollmentProcessingService</members>
+        <members>EnrollmentProcessingServiceTest</members>
+        <members>IntegrationService</members>
         <name>ApexClass</name>
     </types><types>
         <members>County</members>
