@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnrollmentNumber__c</fullName>
+    <label>Enrollment Number</label>
+    <type>Text</type>
+    <length>100</length>
+    <required>false</required>
+    <unique>true</unique>
+    <externalId>true</externalId>
+    <description>Unique enrollment identifier assigned by the external system. Used for lookups and upserts.</description>
+</CustomField>

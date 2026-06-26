@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>System_Name__c</fullName>
+    <label>System Name</label>
+    <type>Text</type>
+    <length>100</length>
+    <required>false</required>
+    <description>Name of the external system that received or sent this request (e.g., Billing System, Provider Management).</description>
+</CustomField>

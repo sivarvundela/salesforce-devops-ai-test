@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Correlation_ID__c</fullName>
+    <label>Correlation ID</label>
+    <type>Text</type>
+    <length>255</length>
+    <required>false</required>
+    <unique>true</unique>
+    <description>Unique identifier for tracking related requests across systems. Used for correlating requests and responses.</description>
+</CustomField>
